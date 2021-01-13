@@ -1,16 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts {
     public class Level01Controller : MonoBehaviour {
         [SerializeField] private Text _currentScoreTextView = null;
         private int _currentScore;
 
+        [SerializeField] private GameObject _pauseMenu = null;
+        private bool _isPaused;
+
+        private void Start()
+        {
+            Pause(false);
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape)) {
-                ExitLevel();
+                Pause(!_isPaused);
             }
         }
 
@@ -24,6 +31,14 @@ namespace Assets.Scripts {
             }
         }
 
+        public void Pause(bool action)
+        {
+            _pauseMenu.SetActive(action);
+            Time.timeScale = action ? 0 : 1;
+            Cursor.lockState = action ? CursorLockMode.None : CursorLockMode.Locked;
+            _isPaused = action;
+        }
+
         public void ExitLevel()
         {
             int highScore = PlayerPrefs.GetInt("HighScore");
@@ -31,7 +46,7 @@ namespace Assets.Scripts {
                 PlayerPrefs.SetInt("HighScore", _currentScore);
             }
 
-            SceneManager.LoadScene("MainMenu");
+            SceneLoader.LoadScene("MainMenu");
         }
     }
 }

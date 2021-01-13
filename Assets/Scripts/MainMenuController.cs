@@ -19,5 +19,20 @@ namespace Assets.Scripts {
                 Debug.Log("Warning: No Starting Song on Main Menu Controller");
             }
         }
+
+        public void ResetData()
+        {
+            PlayerPrefs.SetInt("HighScore", 0);
+        }
+
+        public void LoadScene(string sceneName)
+        {
+            SceneLoader.LoadScene(sceneName);
+        }
+
+        public void ExitApplication()
+        {
+            Application.Quit();
+        }
     }
 }
