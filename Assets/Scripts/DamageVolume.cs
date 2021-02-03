@@ -15,7 +15,7 @@ namespace Assets.Scripts {
 
             PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth == null) {
-                Debug.Log("Warning: Invalid Object on Player layer detected in Damage Volume: " + other.gameObject);
+                Debug.Log("Warning: Invalid Object on Player layer detected in Damage AudioVolume: " + other.gameObject);
                 return;
             }
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets {
+namespace Assets.Scripts {
     public class PlayerCamera : MonoBehaviour {
         [SerializeField] private float _mouseSensitivity = 100f;
         [SerializeField] private Transform _player = null;
