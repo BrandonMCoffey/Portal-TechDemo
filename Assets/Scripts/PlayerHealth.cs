@@ -1,101 +1,57 @@
 using System.Collections;
+using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Assets.Scripts {
     public class PlayerHealth : MonoBehaviour {
-        [SerializeField] private Slider _healthSliderView = null;
-        [SerializeField] private int _maxHealth = 4;
-        [SerializeField] private ParticleSystem _deathParticles = null;
+        [Header("Health Values")]
+        [SerializeField] private FloatVariable _currentHealth = null;
+        [SerializeField] private FloatReference _startingHealth = new FloatReference(4);
+        [SerializeField] private FloatReference _maxHealth = new FloatReference(4);
 
-        [SerializeField] private AudioClip _playerHurtSoundEffect = null;
-        [SerializeField] private AudioClip _playerDeathSoundEffect = null;
+        [Header("Triggered Events")]
+        [SerializeField] private GameEvent _damageEvent = null;
+        [SerializeField] private GameEvent _deathEvent = null;
 
-        private int _currentHealth;
-        private bool _isAlive = true;
+        [Header("References")]
+        [SerializeField] private BoolVariable _playerHasControl = null;
+
+        private void Awake()
+        {
+            if (_currentHealth == null) Debug.Log("[" + GetType().Name + "] Current Health Float Variable missing on " + name);
+            if (_damageEvent == null) Debug.Log("[" + GetType().Name + "] Damage Event missing on " + name);
+            if (_deathEvent == null) Debug.Log("[" + GetType().Name + "] Death Event missing on " + name);
+            if (_playerHasControl == null) Debug.Log("[" + GetType().Name + "] Player Has Control Bool Variable missing on " + name);
+        }
 
         private void Start()
         {
-            _currentHealth = _maxHealth;
-
-            if (_healthSliderView == null) {
-                Debug.Log("Warning: Player Health is missing the Health Slider");
-            } else {
-                _healthSliderView.maxValue = _maxHealth;
-                _healthSliderView.value = _maxHealth;
-            }
-
-            if (_deathParticles == null) {
-                Debug.Log("Warning: Player Health is missing the Death Particles");
-            }
-
-            if (_playerHurtSoundEffect == null) {
-                Debug.Log("Warning: Player Health is missing the Hurt Sound Effect");
-            }
-
-            if (_playerDeathSoundEffect == null) {
-                Debug.Log("Warning: Player Health is missing the Death Sound Effect");
-            }
+            _currentHealth.SetValue(_maxHealth);
         }
 
-        public void Damage(int amount)
+        public void Damage(float damage)
         {
-            if (!_isAlive) return;
-
-            _currentHealth -= amount;
-
-            if (_healthSliderView != null) {
-                _healthSliderView.value = _currentHealth;
-            }
-
-            if (_currentHealth <= 0) {
-                StartCoroutine(PlaySound(_playerDeathSoundEffect));
-                Kill();
+            if (!_playerHasControl.Value) return;
+            _currentHealth.ApplyChange(-damage);
+            if (_currentHealth.Value > 0) {
+                _damageEvent.Raise();
             } else {
-                StartCoroutine(PlaySound(_playerHurtSoundEffect));
+                Kill();
             }
         }
 
         public void Kill()
         {
-            _isAlive = false;
+            _deathEvent.Raise();
+            _playerHasControl.SetValue(false);
 
             GameObject art = transform.Find("Art").gameObject;
             if (art != null) {
                 art.SetActive(false);
             }
-
-            PlayerMovement playerMovement = GetComponent<PlayerMovement>();
-            if (playerMovement != null) {
-                playerMovement._isAlive = false;
-            }
-
-            PlayerFire playerFire = GetComponent<PlayerFire>();
-            if (playerFire != null) {
-                playerFire._isAlive = false;
-            }
-
-            Transform playerCameraParent = transform.Find("CameraParent");
-            if (playerCameraParent != null) {
-                PlayerCamera playerCamera = playerCameraParent.GetComponent<PlayerCamera>();
-                if (playerCamera != null) {
-                    playerCamera._isAlive = false;
-                }
-            }
-
-            _deathParticles.Emit(25);
-        }
-
-        private IEnumerator PlaySound(AudioClip clip)
-        {
-            GameObject soundPlayer = new GameObject("PlayerSounds");
-            soundPlayer.transform.parent = transform;
-            AudioSource sound = soundPlayer.AddComponent<AudioSource>();
-            sound.clip = clip;
-            sound.Play();
-            yield return new WaitForSeconds(1);
-            Destroy(soundPlayer);
         }
     }
 }

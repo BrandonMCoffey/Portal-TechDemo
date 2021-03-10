@@ -1,13 +1,23 @@
+using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts {
     public class Level01Controller : MonoBehaviour {
-        [SerializeField] private Text _currentScoreTextView = null;
-        private int _currentScore;
+        [SerializeField] private GameEvent _pauseEvent = null;
+        [SerializeField] private GameEvent _unpauseEvent = null;
+        [SerializeField] private BoolVariable _playerHasControl = null;
+        [SerializeField] private FloatVariable _currentScore = null;
 
-        [SerializeField] private GameObject _pauseMenu = null;
         private bool _isPaused;
+
+        private void Awake()
+        {
+            if (_pauseEvent == null) Debug.Log("[" + GetType().Name + "] Pause Event missing on " + name);
+            if (_unpauseEvent == null) Debug.Log("[" + GetType().Name + "] Unpause Event missing on " + name);
+            if (_playerHasControl == null) Debug.Log("[" + GetType().Name + "] Player Has Control Bool Variable missing on " + name);
+            if (_currentScore == null) Debug.Log("[" + GetType().Name + "] Current Score missing on " + name);
+        }
 
         private void Start()
         {
@@ -21,20 +31,17 @@ namespace Assets.Scripts {
             }
         }
 
-        public void IncreaseScore(int amount)
-        {
-            _currentScore += amount;
-            if (_currentScoreTextView != null) {
-                _currentScoreTextView.text = "Score: " + _currentScore.ToString();
-            } else {
-                Debug.Log("Warning: Level01 Controller is missing the Current Score Text View");
-            }
-        }
-
         public void Pause(bool action)
         {
-            _pauseMenu.SetActive(action);
-            Time.timeScale = action ? 0 : 1;
+            if (action) {
+                _pauseEvent.Raise();
+                _playerHasControl.SetValue(false);
+            } else {
+                _unpauseEvent.Raise();
+                _playerHasControl.SetValue(true);
+            }
+            // Time.timeScale = action ? 0 : 1;
+            Cursor.visible = action;
             Cursor.lockState = action ? CursorLockMode.None : CursorLockMode.Locked;
             _isPaused = action;
         }
@@ -42,8 +49,8 @@ namespace Assets.Scripts {
         public void ExitLevel()
         {
             int highScore = PlayerPrefs.GetInt("HighScore");
-            if (_currentScore > highScore) {
-                PlayerPrefs.SetInt("HighScore", _currentScore);
+            if (_currentScore.Value > highScore) {
+                PlayerPrefs.SetInt("HighScore", Mathf.FloorToInt(_currentScore.Value));
             }
 
             SceneLoader.LoadScene("MainMenu");

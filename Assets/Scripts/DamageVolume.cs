@@ -1,9 +1,10 @@
 using System.Collections;
+using Assets.Scripts.Utility;
 using UnityEngine;
 
 namespace Assets.Scripts {
     public class DamageVolume : MonoBehaviour {
-        [SerializeField] private int _damage = 1;
+        [SerializeField] private FloatReference _damage = new FloatReference(1);
         [SerializeField] private int _delay = 1;
 
         private bool _canDamage = true;
@@ -15,11 +16,12 @@ namespace Assets.Scripts {
 
             PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth == null) {
-                Debug.Log("Warning: Invalid Object on Player layer detected in Damage AudioVolume: " + other.gameObject);
+                Debug.Log("Warning: Invalid Object on Player layer detected in Damage Volume: " + other.gameObject);
                 return;
+            } else {
+                playerHealth.Damage(_damage);
             }
 
-            playerHealth.Damage(_damage);
             StartCoroutine(DelayNextDamage());
         }
 
