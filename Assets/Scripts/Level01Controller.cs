@@ -27,19 +27,17 @@ namespace Assets.Scripts {
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape)) {
-                Pause(!_isPaused);
+                if (_isPaused) {
+                    _unpauseEvent.Raise();
+                } else {
+                    _pauseEvent.Raise();
+                }
             }
         }
 
         public void Pause(bool action)
         {
-            if (action) {
-                _pauseEvent.Raise();
-                _playerHasControl.SetValue(false);
-            } else {
-                _unpauseEvent.Raise();
-                _playerHasControl.SetValue(true);
-            }
+            _playerHasControl.SetValue(!action);
             // Time.timeScale = action ? 0 : 1;
             Cursor.visible = action;
             Cursor.lockState = action ? CursorLockMode.None : CursorLockMode.Locked;

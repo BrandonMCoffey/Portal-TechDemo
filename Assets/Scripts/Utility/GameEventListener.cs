@@ -11,12 +11,12 @@ namespace Assets.Scripts.Utility {
 
         private void OnEnable()
         {
-            Event.RegisterListener(this);
+            if (Event != null) Event.RegisterListener(this);
         }
 
         private void OnDisable()
         {
-            Event.UnRegisterListener(this);
+            if (Event != null) Event.UnRegisterListener(this);
         }
 
         public void OnEventRaised()

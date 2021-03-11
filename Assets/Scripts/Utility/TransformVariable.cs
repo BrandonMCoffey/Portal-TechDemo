@@ -6,12 +6,5 @@ namespace Assets.Scripts.Utility {
         public Vector3 Position;
         public Quaternion Rotation;
         public Vector3 Forward;
-
-        public virtual void ResetData()
-        {
-            Position = Vector3.zero;
-            Rotation = Quaternion.identity;
-            Forward = Vector3.zero;
-        }
     }
 }
