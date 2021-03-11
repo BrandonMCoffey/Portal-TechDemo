@@ -44,7 +44,7 @@ namespace Assets.Scripts {
         {
             _muzzleFlash.Emit(5);
             if (_impactTransform != null) {
-                _impactTransform.ResetData();
+                _impactTransform.ValidLocation = false;
                 FirePortal(num, transform.parent.position, transform.parent.forward, _fireMaxDistance);
             }
             if (_onPlayerFired != null) _onPlayerFired.Raise();
@@ -56,10 +56,12 @@ namespace Assets.Scripts {
 
             if (hit.collider == null) {
                 Debug.Log("Sorry, you cant portal to space... Yet!");
+                _impactTransform.Position = pos + dir * distance;
                 return;
             }
             if (((1 << hit.collider.gameObject.layer) & _surfaceMask) != 0) {
                 Debug.Log("Portalable Surface!");
+                _impactTransform.ValidLocation = true;
                 SetPortalVariable(hit, portalId);
             } else if (((1 << hit.collider.gameObject.layer) & _portalMask) != 0) {
                 Debug.Log("Can you shoot portals through portals?");
@@ -87,10 +89,10 @@ namespace Assets.Scripts {
                 }
             } else if (((1 << hit.collider.gameObject.layer) & _enemyMask) != 0) {
                 Debug.Log("You hit an enemy. Uh, it died?");
-                _impactTransform.Position = hit.point;
+                SetPortalVariable(hit, portalId);
             } else {
                 Debug.Log("You fool. You can portal here.");
-                _impactTransform.Position = hit.point;
+                SetPortalVariable(hit, portalId);
             }
         }
 

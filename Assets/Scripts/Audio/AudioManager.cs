@@ -3,9 +3,11 @@ using UnityEngine;
 namespace Assets.Scripts.Audio {
     [RequireComponent(typeof(AudioSource))]
     public class AudioManager : MonoBehaviour {
-        public static AudioManager Instance = null;
+        public static AudioManager Instance;
 
         private AudioSource _audioSource;
+
+        #region Singleton
 
         private void Awake()
         {
@@ -17,6 +19,8 @@ namespace Assets.Scripts.Audio {
                 Destroy(gameObject);
             }
         }
+
+        #endregion
 
         public void PlaySong(AudioClip clip)
         {
