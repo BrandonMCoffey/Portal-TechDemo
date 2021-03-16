@@ -22,6 +22,9 @@ namespace Assets.Scripts {
         private void Start()
         {
             Pause(false);
+#if UNITY_EDITOR
+            Application.targetFrameRate = 60;
+#endif
         }
 
         private void Update()

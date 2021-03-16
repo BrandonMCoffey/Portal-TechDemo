@@ -55,16 +55,16 @@ namespace Assets.Scripts {
             Physics.Raycast(pos, dir, out var hit, distance, ~_ignoreMask);
 
             if (hit.collider == null) {
-                Debug.Log("Sorry, you cant portal to space... Yet!");
+                // Debug.Log("Sorry, you cant portal to space... Yet!");
                 _impactTransform.Position = pos + dir * distance;
                 return;
             }
             if (((1 << hit.collider.gameObject.layer) & _surfaceMask) != 0) {
-                Debug.Log("Portalable Surface!");
+                // Debug.Log("Portalable Surface!");
                 _impactTransform.ValidLocation = true;
                 SetPortalVariable(hit, portalId);
             } else if (((1 << hit.collider.gameObject.layer) & _portalMask) != 0) {
-                Debug.Log("Can you shoot portals through portals?");
+                // Debug.Log("Can you shoot portals through portals?");
                 var inPortal = hit.collider.GetComponent<Portal>();
                 if (_shootThroughPortals && inPortal != null && inPortal.OtherPortal != null) {
                     // If we shoot a portal, recursively fire through the portal.
@@ -84,14 +84,13 @@ namespace Assets.Scripts {
 
                     FirePortal(portalId, pos, dir, distance - hit.distance);
                 } else {
-                    Debug.Log("You cannot! Haha");
-                    SetPortalVariable(hit, portalId);
+                    FirePortal(portalId, hit.point + dir / 100, dir, distance - hit.distance);
                 }
             } else if (((1 << hit.collider.gameObject.layer) & _enemyMask) != 0) {
-                Debug.Log("You hit an enemy. Uh, it died?");
+                // Debug.Log("You hit an enemy. Uh, it died?");
                 SetPortalVariable(hit, portalId);
             } else {
-                Debug.Log("You fool. You can portal here.");
+                // Debug.Log("You fool. You can portal here.");
                 SetPortalVariable(hit, portalId);
             }
         }

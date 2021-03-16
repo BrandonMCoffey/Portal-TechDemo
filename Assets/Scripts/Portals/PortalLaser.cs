@@ -20,6 +20,12 @@ namespace Assets.Scripts.Portals {
             if (_fromLocation == null) Debug.Log("[" + GetType().Name + "] From Location Variable missing on " + name);
         }
 
+        private void OnEnable()
+        {
+            _lineRenderer.SetPosition(0, Vector3.zero);
+            _lineRenderer.SetPosition(1, Vector3.zero);
+        }
+
         public void DrawLine(PortalVariable portalLocation)
         {
             _lineRenderer.material = portalLocation.PortalID == 0 ? _portal0 : _portal1;
