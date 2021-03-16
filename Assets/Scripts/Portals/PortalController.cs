@@ -37,6 +37,33 @@ namespace Assets.Scripts.Portals {
             }
         }
 
+        public void RenderPortals(Camera playerCamera)
+        {
+            foreach (var portal in _portals) {
+                portal.PreRenderPortal();
+            }
+            foreach (var portal in _portals) {
+                portal.RenderPortal(playerCamera);
+            }
+            foreach (var portal in _portals) {
+                portal.PostRenderPortal();
+                // if (playerCamera != null) ProtectScreenFromClipping(playerCamera.transform.position, portal.PortalRenderer.MeshRenderer.transform);
+            }
+        }
+
+        /*private void ProtectScreenFromClipping(Vector3 viewPoint, Transform screen)
+        {
+            float halfHeight = _playerCamera.nearClipPlane * Mathf.Tan(_playerCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+            float halfWidth = halfHeight * _playerCamera.aspect;
+            float dstToNearClipPlaneCorner = new Vector3(halfWidth, halfHeight, _playerCamera.nearClipPlane).magnitude;
+            float screenThickness = dstToNearClipPlaneCorner;
+
+            bool camFacingSameDirAsPortal = Vector3.Dot(transform.forward, transform.position - viewPoint) > 0;
+            screen.localScale = new Vector3(screen.localScale.x, screen.localScale.y, screenThickness);
+            screen.localPosition = Vector3.forward * screenThickness * ((camFacingSameDirAsPortal) ? 0.5f : -0.5f);
+            // return screenThickness;
+        }*/
+
         public void PlacePortal(PortalVariable portal)
         {
             if (!portal.ValidLocation) return;
@@ -174,6 +201,13 @@ namespace Assets.Scripts.Portals {
             }
 
             return true;
+        }
+
+        public void RemovePortals()
+        {
+            foreach (var portal in _portals) {
+                portal.gameObject.SetActive(false);
+            }
         }
     }
 }

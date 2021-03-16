@@ -618,6 +618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _positionOffset: {x: 0, y: 1.6, z: -0.1}
   _transformToFollow: {fileID: 11400000, guid: f43f0cec0cd2fba4e8746dc9036f3123, type: 2}
+  _portalController: {fileID: 1334771783}
 --- !u!1 &369478301
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,7 +980,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6762131396297869251, guid: 526153f1a20e32845b70ae8b81451e3d, type: 3}
       propertyPath: m_Name
-      value: PortalOrange
+      value: Orange Portal
       objectReference: {fileID: 0}
     - target: {fileID: 6762131396297869251, guid: 526153f1a20e32845b70ae8b81451e3d, type: 3}
       propertyPath: m_IsActive
@@ -1033,6 +1034,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7458913501906919859, guid: 526153f1a20e32845b70ae8b81451e3d, type: 3}
+      propertyPath: OtherPortal
+      value: 
+      objectReference: {fileID: 2083172146}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 526153f1a20e32845b70ae8b81451e3d, type: 3}
 --- !u!114 &629270317 stripped
@@ -17850,7 +17855,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6762131396297869251, guid: 526153f1a20e32845b70ae8b81451e3d, type: 3}
       propertyPath: m_Name
-      value: PortalBlue
+      value: Blue Portal
       objectReference: {fileID: 0}
     - target: {fileID: 6762131396297869251, guid: 526153f1a20e32845b70ae8b81451e3d, type: 3}
       propertyPath: m_IsActive
@@ -17904,6 +17909,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7458913501906919859, guid: 526153f1a20e32845b70ae8b81451e3d, type: 3}
+      propertyPath: OtherPortal
+      value: 
+      objectReference: {fileID: 629270317}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 526153f1a20e32845b70ae8b81451e3d, type: 3}
 --- !u!114 &2083172146 stripped

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7458913501906919858}
   - component: {fileID: 2625172629400768172}
   - component: {fileID: 7458913501906919859}
+  - component: {fileID: 315007343109191096}
   m_Layer: 7
   m_Name: Portal
   m_TagString: Untagged
@@ -41,7 +42,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6762131396297869251}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 0.25}
@@ -59,8 +60,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OtherPortal: {fileID: 0}
+  PortalRenderer: {fileID: 0}
   WallCollider: {fileID: 0}
   Collider: {fileID: 0}
+--- !u!114 &315007343109191096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6762131396297869251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38785f964b4c7b242b4aa42c63ea02d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MeshRenderer: {fileID: 6821625645252795020}
+  MeshFilter: {fileID: 6948003451255382015}
+  _nearClipOffset: 0.05
+  _nearClipLimit: 0.2
+  OtherRenderer: {fileID: 0}
 --- !u!1 &7197542424123796179
 GameObject:
   m_ObjectHideFlags: 0
