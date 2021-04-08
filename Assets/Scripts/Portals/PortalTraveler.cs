@@ -1,105 +1,101 @@
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Portals {
     [RequireComponent(typeof(Collider))]
     public class PortalTraveler : MonoBehaviour {
-        [SerializeField] private MeshRenderer _travelerArt = null;
+        public GameObject GraphicsObject = null;
 
-        private GameObject _clone;
-        private Portal _inPortal;
-        private Portal _outPortal;
-        private Collider _collider;
-        private MeshFilter _meshFilter;
+        public GameObject GraphicsClone { get; set; }
+        public Vector3 PreviousOffsetFromPortal { get; set; }
+        public Material[] OriginalMaterials { get; set; }
+        public Material[] CloneMaterials { get; set; }
 
-        private static readonly Quaternion HalfTurn = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+        internal Collider Collider;
+        internal Rigidbody Rigidbody;
+
+        internal Portal InPortal;
+
+        private Collider _tempCollider;
 
         private void Awake()
         {
-            _collider = GetComponent<Collider>();
-
-            _clone = new GameObject(name + "_Clone");
-            _clone.SetActive(false);
-            var meshFilter = _clone.AddComponent<MeshFilter>();
-            var meshRenderer = _clone.AddComponent<MeshRenderer>();
-
-            if (_travelerArt == null) return;
-            _meshFilter = _travelerArt.GetComponent<MeshFilter>();
-            meshFilter.mesh = _meshFilter.mesh;
-            meshRenderer.materials = _travelerArt.materials;
-            _clone.transform.localScale = transform.localScale;
+            Collider = GetComponent<Collider>();
+            Rigidbody = GetComponent<Rigidbody>();
         }
 
-        private void LateUpdate()
+        private void Update()
         {
-            if (_inPortal == null || _outPortal == null) return;
-
-            if (_clone.activeSelf) {
-                var inTransform = _inPortal.transform;
-                var outTransform = _outPortal.transform;
-
-                // Update clone
-                Vector3 relativePos = inTransform.InverseTransformPoint(transform.position);
-                relativePos = HalfTurn * relativePos;
-                _clone.transform.position = outTransform.TransformPoint(relativePos);
-                Quaternion relativeRot = Quaternion.Inverse(inTransform.rotation) * transform.rotation;
-                relativeRot = HalfTurn * relativeRot;
-                _clone.transform.rotation = outTransform.rotation * relativeRot;
+            if (_tempCollider != null && InPortal.LinkedPortal.isActiveAndEnabled) {
+                Physics.IgnoreCollision(Collider, _tempCollider, true);
+                _tempCollider = null;
             }
         }
 
-        public void SetInPortal(Portal inPortal, Portal outPortal)
+        public virtual void Teleport(Transform fromPortal, Transform toPortal, Vector3 pos, Quaternion rot)
         {
-            _inPortal = inPortal;
-            _outPortal = outPortal;
-            Physics.IgnoreCollision(_collider, inPortal.WallCollider);
-            _clone.SetActive(true);
+            Debug.Log("Teleport");
+            transform.position = pos;
+            transform.rotation = rot;
+            if (Rigidbody != null) {
+                Rigidbody.velocity = toPortal.TransformVector(fromPortal.InverseTransformVector(Rigidbody.velocity));
+                Rigidbody.angularVelocity = toPortal.TransformVector(fromPortal.InverseTransformVector(Rigidbody.angularVelocity));
+            }
+            Physics.SyncTransforms();
         }
 
-        public void ExitPortal()
+        // Called when first touches portal
+        public void EnterPortalThreshold(Portal inPortal)
         {
-            Physics.IgnoreCollision(_collider, _inPortal.WallCollider, false);
-            _clone.SetActive(false);
+            InPortal = inPortal;
+            if (GraphicsClone == null) {
+                GraphicsClone = Instantiate(GraphicsObject);
+                GraphicsClone.transform.SetParent(GraphicsObject.transform.parent);
+                GraphicsClone.transform.localScale = GraphicsObject.transform.localScale;
+                OriginalMaterials = GetMaterials(GraphicsObject);
+                CloneMaterials = GetMaterials(GraphicsClone);
+            } else {
+                GraphicsClone.SetActive(true);
+            }
+            if (inPortal.LinkedPortal != null) {
+                if (inPortal.LinkedPortal.isActiveAndEnabled) {
+                    Physics.IgnoreCollision(Collider, inPortal.WallCollider, true);
+                } else {
+                    _tempCollider = inPortal.WallCollider;
+                }
+            }
         }
 
-        public void Warp()
+        // Called once no longer touching portal (excluding when teleporting)
+        public void ExitPortalThreshold(Portal inPortal)
         {
-            var inTransform = _inPortal.transform;
-            var outTransform = _outPortal.transform;
-
-            // Update position of object.
-            Vector3 relativePos = inTransform.InverseTransformPoint(transform.position);
-            relativePos = HalfTurn * relativePos;
-            transform.position = outTransform.TransformPoint(relativePos);
-
-            // Update rotation of object.
-            Quaternion relativeRot = Quaternion.Inverse(inTransform.rotation) * transform.rotation;
-            relativeRot = HalfTurn * relativeRot;
-            transform.rotation = outTransform.rotation * relativeRot;
-
-            Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null) {
-                // Update velocity of rigidbody.
-                Vector3 relativeVel = inTransform.InverseTransformDirection(rb.velocity);
-                relativeVel = HalfTurn * relativeVel;
-                rb.velocity = outTransform.TransformDirection(relativeVel);
+            InPortal = null;
+            GraphicsClone.SetActive(false);
+            // Disable slicing
+            foreach (var mat in OriginalMaterials) {
+                mat.SetVector("sliceNormal", Vector3.zero);
             }
-
-            CharacterController cc = GetComponent<CharacterController>();
-            if (cc != null) {
-                // Update velocity of rigidbody.
-                Vector3 relativeVel = inTransform.InverseTransformDirection(cc.velocity);
-                relativeVel = HalfTurn * relativeVel;
-                Vector3 vel = outTransform.TransformDirection(relativeVel);
-                cc.velocity.Set(vel.x, vel.y, vel.z);
+            if (inPortal.WallCollider != null) {
+                Physics.IgnoreCollision(Collider, inPortal.WallCollider, false);
+                _tempCollider = null;
             }
+        }
 
-            ExitPortal();
+        public void SetSliceOffsetDst(float dst, bool clone)
+        {
+            for (int i = 0; i < OriginalMaterials.Length; i++) {
+                if (clone) {
+                    CloneMaterials[i].SetFloat("sliceOffsetDst", dst);
+                } else {
+                    OriginalMaterials[i].SetFloat("sliceOffsetDst", dst);
+                }
+            }
+        }
 
-            // Swap portal references.
-            //var tempPortal = _inPortal;
-            //_inPortal = _outPortal;
-            //_outPortal = tempPortal;
+        private static Material[] GetMaterials(GameObject obj)
+        {
+            var renderers = obj.GetComponentsInChildren<MeshRenderer>();
+            return renderers.SelectMany(r => r.materials).ToArray();
         }
     }
 }

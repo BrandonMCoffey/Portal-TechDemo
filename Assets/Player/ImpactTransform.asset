@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b8f0acf32e49b94d804fab2d0477d3d, type: 3}
+  m_Script: {fileID: 11500000, guid: e96e712345c4f3642b31a333f9d1e416, type: 3}
   m_Name: ImpactTransform
   m_EditorClassIdentifier: 
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0, w: 0}
   Forward: {x: 0, y: 0, z: 0}
+  ValidLocation: 0
   PortalID: 0
   Collider: {fileID: 0}

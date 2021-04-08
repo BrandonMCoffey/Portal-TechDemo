@@ -4,13 +4,18 @@ using UnityEngine;
 
 namespace Assets.Scripts.Portals {
     public class PortalController : MonoBehaviour {
+        [SerializeField] private bool _disableAtStart = true;
         [SerializeField] private LayerMask _wallMask = 0;
         [SerializeField] private List<Portal> _portals = new List<Portal>(2);
 
+        private List<GameObject> _tempObjects = new List<GameObject>();
+
         private int _portalToPlace;
 
-        private const float PortalHeight = 1f;
-        private const float PortalWidth = 0.5f;
+        private bool _bothPortalsPlaced = true;
+
+        private const float PortalHeight = 1.15f;
+        private const float PortalWidth = 0.575f;
         private const string PortalMask = "Portal";
 
         private Transform _portalPlacementTest;
@@ -32,40 +37,61 @@ namespace Assets.Scripts.Portals {
                 }
             }
 
+            if (!_disableAtStart) return;
             foreach (var portal in _portals) {
                 portal.gameObject.SetActive(false);
             }
+            _bothPortalsPlaced = false;
         }
 
-        public void RenderPortals(Camera playerCamera)
+        public void ResetPortals(bool reset)
         {
+            if (reset) {
+                _bothPortalsPlaced = false;
+                foreach (var p in _portals) {
+                    p.gameObject.SetActive(false);
+                }
+            } else {
+                _bothPortalsPlaced = true;
+                foreach (var p in _portals) {
+                    _bothPortalsPlaced &= p.isActiveAndEnabled;
+                    if (p.isActiveAndEnabled) p.BufferTravelers();
+                }
+            }
+        }
+
+        public void SetMainCamera(Camera playerCamera)
+        {
+            foreach (var portal in _portals) {
+                portal.PlayerCamera = playerCamera;
+            }
+        }
+
+        public void RenderPortals()
+        {
+            if (!_bothPortalsPlaced) {
+                foreach (var portal in _portals.Where(portal => portal.isActiveAndEnabled)) {
+                    portal.SetInactiveColor();
+                }
+                return;
+            }
             foreach (var portal in _portals) {
                 portal.PreRenderPortal();
             }
             foreach (var portal in _portals) {
-                portal.RenderPortal(playerCamera);
+                portal.RenderPortal();
             }
             foreach (var portal in _portals) {
                 portal.PostRenderPortal();
-                // if (playerCamera != null) ProtectScreenFromClipping(playerCamera.transform.position, portal.PortalRenderer.MeshRenderer.transform);
             }
         }
 
-        /*private void ProtectScreenFromClipping(Vector3 viewPoint, Transform screen)
-        {
-            float halfHeight = _playerCamera.nearClipPlane * Mathf.Tan(_playerCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
-            float halfWidth = halfHeight * _playerCamera.aspect;
-            float dstToNearClipPlaneCorner = new Vector3(halfWidth, halfHeight, _playerCamera.nearClipPlane).magnitude;
-            float screenThickness = dstToNearClipPlaneCorner;
-
-            bool camFacingSameDirAsPortal = Vector3.Dot(transform.forward, transform.position - viewPoint) > 0;
-            screen.localScale = new Vector3(screen.localScale.x, screen.localScale.y, screenThickness);
-            screen.localPosition = Vector3.forward * screenThickness * ((camFacingSameDirAsPortal) ? 0.5f : -0.5f);
-            // return screenThickness;
-        }*/
-
         public void PlacePortal(PortalVariable portal)
         {
+            for (int i = _tempObjects.Count - 1; i > 0; i--) {
+                Destroy(_tempObjects[i]);
+            }
+
             if (!portal.ValidLocation) return;
             _portalToPlace = portal.PortalID;
 
@@ -73,16 +99,31 @@ namespace Assets.Scripts.Portals {
             _portalPlacementTest.rotation = portal.Rotation;
             _portalPlacementTest.position -= portal.Forward * 0.001f;
 
-            // Debug.Log("Start:            " + _portalPlacementTest.position);
+            FixUpsideDown();
+
+            _portalPlacementTest.Translate(-_portalPlacementTest.up * 0.5f);
+
+            //Debug.Log("Start:            " + _portalPlacementTest.position);
             FixOverhangs();
+            //Debug.Log("Overhang:   " + _portalPlacementTest.position);
             FixIntersects();
+            //Debug.Log("Intersect:     " + _portalPlacementTest.position);
 
             if (!CheckOverlap()) return;
+            //Debug.Log("Overlap:           " + _portalPlacementTest.position);
 
             _portals[_portalToPlace].gameObject.SetActive(true);
+            _portals[_portalToPlace].RemoveTravelers();
             _portals[_portalToPlace].WallCollider = portal.Collider;
-            _portals[_portalToPlace].transform.position = _portalPlacementTest.position;
+            _portals[_portalToPlace].transform.position = _portalPlacementTest.position - _portalPlacementTest.forward.normalized * 0.05f;
             _portals[_portalToPlace].transform.rotation = _portalPlacementTest.rotation;
+            if (_portalToPlace == 0) _portals[_portalToPlace].transform.rotation *= Quaternion.Euler(0, 180, 0);
+
+            _bothPortalsPlaced = true;
+            foreach (var p in _portals) {
+                _bothPortalsPlaced &= p.isActiveAndEnabled;
+                if (p.isActiveAndEnabled) p.BufferTravelers();
+            }
         }
 
         // Ensure the portal cannot extend past the edge of a surface.
@@ -123,7 +164,6 @@ namespace Assets.Scripts.Portals {
                     _portalPlacementTest.Translate(offset, Space.World);
                 }
             }
-            // Debug.Log("Overhang:   " + _portalPlacementTest.position);
         }
 
         // Ensure the portal cannot intersect a section of wall.
@@ -144,12 +184,11 @@ namespace Assets.Scripts.Portals {
                 Vector3 raycastDir = _portalPlacementTest.TransformDirection(testDirs[i]);
 
                 if (Physics.Raycast(raycastPos, raycastDir, out var hit, testDistances[i], _wallMask)) {
-                    var offset = (hit.point - raycastPos);
+                    var offset = hit.point - raycastPos;
                     var newOffset = -raycastDir * (testDistances[i] - offset.magnitude);
                     _portalPlacementTest.Translate(newOffset, Space.World);
                 }
             }
-            // Debug.Log("Intersect:     " + _portalPlacementTest.position);
         }
 
         // Once positioning has taken place, ensure the portal isn't intersecting anything.
@@ -189,7 +228,13 @@ namespace Assets.Scripts.Portals {
             // We are allowed to intersect the old portal position.
             if (portalIntersections.Length > 0) {
                 foreach (var portalCollider in portalIntersections) {
-                    if (_portals.Count > _portalToPlace && portalCollider == _portals[_portalToPlace].Collider) continue;
+                    if (_portals[_portalToPlace].isActiveAndEnabled) {
+                        if (portalCollider == _portals[_portalToPlace].Collider) continue;
+                        Transform parent = portalCollider.transform.parent;
+                        Collider collider = null;
+                        if (parent != null) collider = parent.GetComponent<Collider>();
+                        if (collider != null && collider == _portals[_portalToPlace].Collider) continue;
+                    }
 
                     if (second) return false;
                     portalCollider.gameObject.layer = 10; // FIXME invalid solution
@@ -201,6 +246,13 @@ namespace Assets.Scripts.Portals {
             }
 
             return true;
+        }
+
+        private void FixUpsideDown()
+        {
+            if (_portalPlacementTest.up == Vector3.down) {
+                _portalPlacementTest.Rotate(new Vector3(0, 0, 180));
+            }
         }
 
         public void RemovePortals()

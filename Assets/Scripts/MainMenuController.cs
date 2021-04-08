@@ -1,4 +1,5 @@
 using Assets.Scripts.Audio;
+using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +25,7 @@ namespace Assets.Scripts {
         public void ResetData()
         {
             PlayerPrefs.SetInt("HighScore", 0);
+            _highScoreTextView.text = "High Score: 0";
         }
 
         public void LoadScene(string sceneName)

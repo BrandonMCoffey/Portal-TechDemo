@@ -15,9 +15,9 @@ TagManager:
   - Portal
   - Enemies
   - Surface-Portalable
-  - Environment-NOT-Portalable
-  - 
-  - 
+  - Surface-NotPortable
+  - Hazard
+  - Interactables
   - 
   - 
   - 

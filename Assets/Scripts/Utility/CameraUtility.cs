@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Utility {
-    public class CameraUtility : MonoBehaviour {
+    public static class CameraUtility {
         private static readonly Vector3[] CubeCornerOffsets =
         {
             new Vector3(1, 1, 1),
@@ -27,13 +27,13 @@ namespace Assets.Scripts.Utility {
             var far = GetScreenRectFromBounds(farObject, camera);
 
             // ensure far object is indeed further away than near object
-            if (far.zMax > near.zMin) {
+            if (far.ZMax > near.ZMin) {
                 // Doesn't overlap on x axis
-                if (far.xMax < near.xMin || far.xMin > near.xMax) {
+                if (far.XMax < near.XMin || far.XMin > near.XMax) {
                     return false;
                 }
                 // Doesn't overlap on y axis
-                if (far.yMax < near.yMin || far.yMin > near.yMax) {
+                if (far.YMax < near.YMin || far.YMin > near.YMax) {
                     return false;
                 }
                 // Overlaps
@@ -47,7 +47,6 @@ namespace Assets.Scripts.Utility {
         {
             MinMax3D minMax = new MinMax3D(float.MaxValue, float.MinValue);
 
-            Vector3[] screenBoundsExtents = new Vector3[8];
             var localBounds = renderer.sharedMesh.bounds;
             bool anyPointIsInFrontOfCamera = false;
 
@@ -70,37 +69,39 @@ namespace Assets.Scripts.Utility {
             }
 
             // All points are behind camera so just return empty bounds
-            if (!anyPointIsInFrontOfCamera) return new MinMax3D();
+            if (!anyPointIsInFrontOfCamera) {
+                return new MinMax3D();
+            }
 
             return minMax;
         }
 
         public struct MinMax3D {
-            public float xMin;
-            public float xMax;
-            public float yMin;
-            public float yMax;
-            public float zMin;
-            public float zMax;
+            public float XMin;
+            public float XMax;
+            public float YMin;
+            public float YMax;
+            public float ZMin;
+            public float ZMax;
 
             public MinMax3D(float min, float max)
             {
-                this.xMin = min;
-                this.xMax = max;
-                this.yMin = min;
-                this.yMax = max;
-                this.zMin = min;
-                this.zMax = max;
+                this.XMin = min;
+                this.XMax = max;
+                this.YMin = min;
+                this.YMax = max;
+                this.ZMin = min;
+                this.ZMax = max;
             }
 
             public void AddPoint(Vector3 point)
             {
-                xMin = Mathf.Min(xMin, point.x);
-                xMax = Mathf.Max(xMax, point.x);
-                yMin = Mathf.Min(yMin, point.y);
-                yMax = Mathf.Max(yMax, point.y);
-                zMin = Mathf.Min(zMin, point.z);
-                zMax = Mathf.Max(zMax, point.z);
+                XMin = Mathf.Min(XMin, point.x);
+                XMax = Mathf.Max(XMax, point.x);
+                YMin = Mathf.Min(YMin, point.y);
+                YMax = Mathf.Max(YMax, point.y);
+                ZMin = Mathf.Min(ZMin, point.z);
+                ZMax = Mathf.Max(ZMax, point.z);
             }
         }
     }

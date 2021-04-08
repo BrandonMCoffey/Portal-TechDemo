@@ -1,6 +1,6 @@
+using Assets.Scripts.GameEvents.Logic;
 using Assets.Scripts.Utility;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts {
     public class Level01Controller : MonoBehaviour {
@@ -36,6 +36,14 @@ namespace Assets.Scripts {
                     _pauseEvent.Raise();
                 }
             }
+            if (Input.GetKeyDown(KeyCode.Q)) {
+                OnCollect();
+            }
+        }
+
+        public void OnCollect()
+        {
+            _currentScore.ApplyChange(1);
         }
 
         public void Pause(bool action)
@@ -45,6 +53,11 @@ namespace Assets.Scripts {
             Cursor.visible = action;
             Cursor.lockState = action ? CursorLockMode.None : CursorLockMode.Locked;
             _isPaused = action;
+        }
+
+        public void OnRespawn()
+        {
+            SceneLoader.ReloadScene();
         }
 
         public void ExitLevel()
