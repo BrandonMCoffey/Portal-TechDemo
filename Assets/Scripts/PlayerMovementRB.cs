@@ -2,8 +2,8 @@ using Assets.Scripts.Utility;
 using UnityEngine;
 
 namespace Assets.Scripts {
-    [RequireComponent(typeof(CharacterController))]
-    public class PlayerMovement : MonoBehaviour {
+    [RequireComponent(typeof(Rigidbody))]
+    public class PlayerMovementRB : MonoBehaviour {
         [Header("Movement Settings")]
         [SerializeField] private float _moveSpeed = 7;
         [SerializeField] private float _moveAcceleration = 14;
@@ -18,21 +18,22 @@ namespace Assets.Scripts {
         [SerializeField] private float _upDownClamp = 80;
 
         [Header("World Settings")]
-        [SerializeField] private float _gravity = 20;
         [SerializeField] private float _friction = 6;
+        [SerializeField] private float _groundCheckRadius = 1;
 
         [Header("References")]
+        [SerializeField] private Transform _groundCheck = null;
         [SerializeField] private TransformVariable _transform = null;
         [SerializeField] private BoolVariable _playerHasControl = null;
 
-        private CharacterController _controller;
+        private Rigidbody _rigidbody;
 
         private float _forwardMove;
         private float _rightMove;
         private float _rotX;
         private float _rotY;
 
-        private Vector3 _playerVelocity = Vector3.zero;
+        private Vector3 _movementThisFrame = Vector3.zero;
 
         private bool _wishJump;
 
@@ -44,7 +45,7 @@ namespace Assets.Scripts {
 
         private void Start()
         {
-            _controller = GetComponent<CharacterController>();
+            _rigidbody = GetComponent<Rigidbody>();
             if (_transform != null) _transform.Position = transform.position;
         }
 
@@ -67,14 +68,20 @@ namespace Assets.Scripts {
 
             SetMovementDirection();
             QueueJump();
-            if (_controller.isGrounded) {
+
+            if (IsGrounded()) {
                 GroundMove();
-            } else if (!_controller.isGrounded) {
+            } else {
                 AirMove();
             }
-            _controller.Move(_playerVelocity * Time.deltaTime);
 
             if (_transform != null) _transform.Position = transform.position;
+        }
+
+        private void FixedUpdate()
+        {
+            _rigidbody.MovePosition(_rigidbody.position + _movementThisFrame);
+            _movementThisFrame = Vector3.zero;
         }
 
         private void SetMovementDirection()
@@ -91,7 +98,7 @@ namespace Assets.Scripts {
 
         private void GroundMove()
         {
-            ApplyFriction(_wishJump ? 0 : 1.0f);
+            ApplyFriction(_wishJump ? 0 : 1);
 
             var wishDir = new Vector3(_rightMove, 0, _forwardMove);
             wishDir = transform.TransformDirection(wishDir);
@@ -102,10 +109,10 @@ namespace Assets.Scripts {
 
             Accelerate(wishDir, wishSpeed, _moveAcceleration);
 
-            _playerVelocity.y = -_gravity * Time.deltaTime;
-
             if (_wishJump) {
-                _playerVelocity.y = _jumpSpeed;
+                Vector3 vel = _rigidbody.velocity;
+                vel.y = _jumpSpeed;
+                _rigidbody.velocity = vel;
                 _wishJump = false;
             }
         }
@@ -120,22 +127,20 @@ namespace Assets.Scripts {
 
             wishSpeed *= _moveSpeed;
 
-            float accel = Vector3.Dot(_playerVelocity, wishDir) < 0 ? _airDeacceleration : _airAcceleration;
+            float accel = Vector3.Dot(_movementThisFrame, wishDir) < 0 ? _airDeacceleration : _airAcceleration;
 
             Accelerate(wishDir, wishSpeed, accel);
-
-            _playerVelocity.y -= _gravity * Time.deltaTime;
         }
 
         private void ApplyFriction(float t)
         {
-            Vector3 vec = _playerVelocity;
+            Vector3 vec = _movementThisFrame;
 
             vec.y = 0.0f;
             float speed = vec.magnitude;
             float drop = 0.0f;
 
-            if (_controller.isGrounded) {
+            if (IsGrounded()) {
                 float control = speed < _moveDeacceleration ? _moveDeacceleration : speed;
                 drop = control * _friction * Time.deltaTime * t;
             }
@@ -146,28 +151,34 @@ namespace Assets.Scripts {
             if (speed > 0)
                 newSpeed /= speed;
 
-            _playerVelocity.x *= newSpeed;
-            _playerVelocity.z *= newSpeed;
+            _movementThisFrame.x *= newSpeed;
+            _movementThisFrame.z *= newSpeed;
         }
 
         private void Accelerate(Vector3 wishDir, float wishSpeed, float accel)
         {
-            float currentSpeed = Vector3.Dot(_playerVelocity, wishDir);
+            float currentSpeed = Vector3.Dot(_movementThisFrame, wishDir);
             float addSpeed = wishSpeed - currentSpeed;
             if (addSpeed <= 0) return;
             float accelSpeed = accel * Time.deltaTime * wishSpeed;
             if (accelSpeed > addSpeed) accelSpeed = addSpeed;
 
-            _playerVelocity.x += accelSpeed * wishDir.x;
-            _playerVelocity.z += accelSpeed * wishDir.z;
+            _movementThisFrame.x += accelSpeed * wishDir.x;
+            _movementThisFrame.z += accelSpeed * wishDir.z;
 
-            if (_playerVelocity.magnitude > _moveSpeed + 2) {
-                float ySpeed = _playerVelocity.y;
-                _playerVelocity.Normalize();
-                _playerVelocity.x *= _moveSpeed + 2;
-                _playerVelocity.y = ySpeed;
-                _playerVelocity.z *= _moveSpeed + 2;
+            if (_movementThisFrame.magnitude > _moveSpeed + 2) {
+                float ySpeed = _movementThisFrame.y;
+                _movementThisFrame.Normalize();
+                _movementThisFrame.x *= _moveSpeed + 2;
+                _movementThisFrame.y = ySpeed;
+                _movementThisFrame.z *= _moveSpeed + 2;
             }
+        }
+
+        private bool IsGrounded()
+        {
+            if (_groundCheck == null) return true;
+            return Physics.CheckSphere(_groundCheck.position, _groundCheckRadius);
         }
     }
 }

@@ -34,18 +34,11 @@ namespace Assets.Scripts.Portals {
             }
         }
 
-        private void Update()
-        {
-            foreach (var traveler in _portalTravelers) {
-                Vector3 pos = transform.InverseTransformPoint(traveler.transform.position);
-                if (pos.z > 0) traveler.Warp();
-            }
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             var traveler = other.GetComponent<PortalTraveler>();
             if (traveler != null) {
+                Debug.Log("Enter");
                 _portalTravelers.Add(traveler);
                 traveler.SetInPortal(this, OtherPortal);
             }
@@ -53,10 +46,20 @@ namespace Assets.Scripts.Portals {
 
         private void OnTriggerExit(Collider other)
         {
+            Debug.Log("Exit");
             var traveler = other.GetComponent<PortalTraveler>();
             if (_portalTravelers.Contains(traveler)) {
                 _portalTravelers.Remove(traveler);
                 traveler.ExitPortal();
+            }
+        }
+
+        private void Update()
+        {
+            foreach (var traveler in _portalTravelers) {
+                Debug.Log("Travel");
+                Vector3 pos = transform.InverseTransformPoint(traveler.transform.position);
+                if (pos.z > 0) traveler.Warp();
             }
         }
 

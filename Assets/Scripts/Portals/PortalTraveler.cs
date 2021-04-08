@@ -1,29 +1,32 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Portals {
-    [RequireComponent(typeof(Collider), typeof(Rigidbody))]
-    [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+    [RequireComponent(typeof(Collider))]
     public class PortalTraveler : MonoBehaviour {
+        [SerializeField] private MeshRenderer _travelerArt = null;
+
         private GameObject _clone;
         private Portal _inPortal;
         private Portal _outPortal;
         private Collider _collider;
-        private Rigidbody _rigidbody;
+        private MeshFilter _meshFilter;
 
         private static readonly Quaternion HalfTurn = Quaternion.Euler(0.0f, 180.0f, 0.0f);
 
         private void Awake()
         {
             _collider = GetComponent<Collider>();
-            _rigidbody = GetComponent<Rigidbody>();
 
             _clone = new GameObject(name + "_Clone");
             _clone.SetActive(false);
             var meshFilter = _clone.AddComponent<MeshFilter>();
             var meshRenderer = _clone.AddComponent<MeshRenderer>();
 
-            meshFilter.mesh = GetComponent<MeshFilter>().mesh;
-            meshRenderer.materials = GetComponent<MeshRenderer>().materials;
+            if (_travelerArt == null) return;
+            _meshFilter = _travelerArt.GetComponent<MeshFilter>();
+            meshFilter.mesh = _meshFilter.mesh;
+            meshRenderer.materials = _travelerArt.materials;
             _clone.transform.localScale = transform.localScale;
         }
 
@@ -74,15 +77,29 @@ namespace Assets.Scripts.Portals {
             relativeRot = HalfTurn * relativeRot;
             transform.rotation = outTransform.rotation * relativeRot;
 
-            // Update velocity of rigidbody.
-            Vector3 relativeVel = inTransform.InverseTransformDirection(_rigidbody.velocity);
-            relativeVel = HalfTurn * relativeVel;
-            _rigidbody.velocity = outTransform.TransformDirection(relativeVel);
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null) {
+                // Update velocity of rigidbody.
+                Vector3 relativeVel = inTransform.InverseTransformDirection(rb.velocity);
+                relativeVel = HalfTurn * relativeVel;
+                rb.velocity = outTransform.TransformDirection(relativeVel);
+            }
+
+            CharacterController cc = GetComponent<CharacterController>();
+            if (cc != null) {
+                // Update velocity of rigidbody.
+                Vector3 relativeVel = inTransform.InverseTransformDirection(cc.velocity);
+                relativeVel = HalfTurn * relativeVel;
+                Vector3 vel = outTransform.TransformDirection(relativeVel);
+                cc.velocity.Set(vel.x, vel.y, vel.z);
+            }
+
+            ExitPortal();
 
             // Swap portal references.
-            var tempPortal = _inPortal;
-            _inPortal = _outPortal;
-            _outPortal = tempPortal;
+            //var tempPortal = _inPortal;
+            //_inPortal = _outPortal;
+            //_outPortal = tempPortal;
         }
     }
 }

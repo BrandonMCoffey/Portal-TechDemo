@@ -15,7 +15,6 @@ namespace Assets.Scripts {
         [SerializeField] private bool _shootThroughPortals = false;
 
         [Header("References")]
-        [SerializeField] private ParticleSystem _muzzleFlash = null;
         [SerializeField] private PortalVariable _impactTransform = null;
         [SerializeField] private GameEvent _onPlayerFired = null;
         [SerializeField] private BoolVariable _playerHasControl = null;
@@ -42,7 +41,6 @@ namespace Assets.Scripts {
 
         private void FireWeapon(int num)
         {
-            _muzzleFlash.Emit(5);
             if (_impactTransform != null) {
                 _impactTransform.ValidLocation = false;
                 FirePortal(num, transform.parent.position, transform.parent.forward, _fireMaxDistance);

@@ -5,17 +5,19 @@ using UnityEngine;
 namespace Assets.Scripts.Portals {
     public class PortalRenderer : MonoBehaviour {
         public MeshRenderer MeshRenderer;
-        public MeshFilter MeshFilter;
 
         [SerializeField] private float _nearClipOffset = 0.05f;
         [SerializeField] private float _nearClipLimit = 0.2f;
 
         [HideInInspector] public PortalRenderer OtherRenderer = null;
+        [HideInInspector] public MeshFilter MeshFilter;
 
         private Camera _portalCamera;
         private RenderTexture _texture;
 
         private Vector3 PortalCamPos => _portalCamera.transform.position;
+
+        private Quaternion _flipRotation = Quaternion.Euler(0f, 180f, 0f);
 
         private const int RecursionLimit = 7;
 
@@ -46,12 +48,9 @@ namespace Assets.Scripts.Portals {
             int startIndex = 0;
             _portalCamera.projectionMatrix = playerCamera.projectionMatrix;
             for (int i = 0; i < RecursionLimit; i++) {
-                if (i > 0) {
-                    // No need for recursive rendering if linked portal is not visible through this portal
-                    if (!CameraUtility.BoundsOverlap(MeshFilter, OtherRenderer.MeshFilter, _portalCamera)) {
-                        break;
-                    }
-                }
+                // No need for recursive rendering if linked portal is not visible through this portal
+                if (i > 0 && !CameraUtility.BoundsOverlap(MeshFilter, OtherRenderer.MeshFilter, _portalCamera)) break;
+
                 localToWorldMatrix = transform.localToWorldMatrix * OtherRenderer.transform.worldToLocalMatrix * localToWorldMatrix;
                 int renderOrderIndex = RecursionLimit - i - 1;
                 renderPositions[renderOrderIndex] = localToWorldMatrix.GetColumn(3);
