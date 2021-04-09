@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Scripts.Interactables {
     public class DamageVolume : MonoBehaviour {
         [SerializeField] private FloatReference _damage = new FloatReference(1);
-        [SerializeField] private int _delay = 1;
+        [SerializeField] private float _delay = 1;
 
         private bool _canDamage = true;
 
@@ -40,7 +40,10 @@ namespace Assets.Scripts.Interactables {
         private IEnumerator DelayNextDamage()
         {
             _canDamage = false;
-            yield return new WaitForSeconds(_delay);
+            for (float t = 0; t <= _delay; t += Time.deltaTime)
+            {
+                yield return null;
+            }
             _canDamage = true;
         }
     }

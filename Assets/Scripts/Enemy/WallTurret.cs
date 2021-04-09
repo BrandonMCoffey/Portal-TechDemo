@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Assets.Scripts.Audio;
 using Assets.Scripts.GameEvents.Logic;
 using Assets.Scripts.Portals;
@@ -20,7 +21,9 @@ namespace Assets.Scripts.Enemy {
         [SerializeField] private WallTurretHealth _health = null;
         [SerializeField] private PlayFromSource _turretAudio = null;
         [SerializeField] private GameEvent _refreshPortals = null;
+        [SerializeField] private List<GameObject> _enableOnActive = new List<GameObject>();
         [SerializeField] private UnityEvent _onDeath = new UnityEvent();
+
 
         private Coroutine _currentCoroutine;
         private Coroutine _bulletCoroutine;
@@ -32,6 +35,14 @@ namespace Assets.Scripts.Enemy {
         private bool _canFire = true;
 
         public override bool IsActive => _openState == 0;
+
+        private void Start()
+        {
+            foreach (var obj in _enableOnActive) {
+                obj.SetActive(false);
+            }
+            _collider.enabled = false;
+        }
 
         private void Update()
         {
@@ -45,9 +56,15 @@ namespace Assets.Scripts.Enemy {
                     _bulletCoroutine = StartCoroutine(FireBullet(_openState > 0.95f));
                 }
             }
-            if (_openState > 0.1f && !_collider.enabled) {
+            if (_openState > 0.2f && !_collider.enabled) {
+                foreach (var obj in _enableOnActive) {
+                    obj.SetActive(true);
+                }
                 _collider.enabled = true;
-            } else if (_openState < 0.1f && _collider.enabled) {
+            } else if (_openState < 0.2f && _collider.enabled) {
+                foreach (var obj in _enableOnActive) {
+                    obj.SetActive(false);
+                }
                 _collider.enabled = false;
             }
         }
@@ -70,6 +87,7 @@ namespace Assets.Scripts.Enemy {
 
         public override void OnHit()
         {
+            if (!_isAlive) return;
             if (_turretAudio != null) _turretAudio.PlayOneShot(1);
             if (_health != null) {
                 if (_health.Damage()) Shutdown();
@@ -101,7 +119,6 @@ namespace Assets.Scripts.Enemy {
                 Portal portal = col.GetComponent<Portal>();
                 if (portal != null) {
                     portal.gameObject.SetActive(false);
-                    Debug.Log("Boom");
                     if (_refreshPortals != null) _refreshPortals.Raise();
                 }
             }
@@ -129,13 +146,21 @@ namespace Assets.Scripts.Enemy {
 
         private IEnumerator ShutdownSequence()
         {
+            foreach (var obj in _enableOnActive) {
+                obj.SetActive(false);
+            }
+            _isAlive = false;
+            yield return new WaitForSeconds(1);
             for (float t = _openTime - _openState * _openTime; t <= _openTime; t += Time.deltaTime) {
                 _openState = 1 - t / _openTime;
+                if (_panelTransform != null) {
+                    _panelTransform.localEulerAngles = new Vector3(_openState * _panelOpeningAmount, 0, 0);
+                }
                 yield return null;
             }
             _openState = 0;
             _collider.enabled = false;
-            _isAlive = false;
+            if (_panelTransform != null) _panelTransform.localEulerAngles = Vector3.zero;
         }
 
         private IEnumerator FireBullet(bool fire)

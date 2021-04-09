@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 2414485581346034865}
   - component: {fileID: 2414485581346034864}
   - component: {fileID: 2414485581346034866}
-  - component: {fileID: 2414485581346034867}
   - component: {fileID: 2414485581346034876}
   - component: {fileID: 2414485581346034877}
+  - component: {fileID: 1639091426}
+  - component: {fileID: 7651634377584009288}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged
@@ -49,10 +50,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a8b567e5714ff4a8215926e36a9887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scoreString: 0
   _pauseEvent: {fileID: 11400000, guid: caceaf6919e891c4681dbbdf03d3ee12, type: 2}
   _unpauseEvent: {fileID: 11400000, guid: e116f0a6d09aaf44ca2c37ddfcbd289a, type: 2}
   _playerHasControl: {fileID: 11400000, guid: cfd05f1815c9f8f45b99d91c475537d8, type: 2}
-  _currentScore: {fileID: 11400000, guid: 344a4f76151308e48b9aa662edb9129f, type: 2}
+  _currentTime: {fileID: 11400000, guid: 812c0233bbba7904abc35aefa76e515b, type: 2}
+  _cheatScore: {fileID: 11400000, guid: e9546ccae5bfb7e43a765e8161f2ec29, type: 2}
+  _currentScores:
+  - {fileID: 11400000, guid: 344a4f76151308e48b9aa662edb9129f, type: 2}
+  - {fileID: 11400000, guid: 8c8c2b04e4ca16b46a8d24e2c5b533c9, type: 2}
+  - {fileID: 11400000, guid: a93b78c7624b11e40a2a63faf7356113, type: 2}
 --- !u!114 &2414485581346034865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,34 +144,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2414485581346034867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2414485581346034869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04ba6fddf2d3734f8343334f39d20fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 78b1c7acf048d6d4390337c624603b69, type: 2}
-  Response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2414485581346034870}
-        m_TargetAssemblyTypeName: Assets.Scripts.Level01Controller, Assembly-CSharp
-        m_MethodName: OnCollect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &2414485581346034876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,6 +191,62 @@ MonoBehaviour:
       - m_Target: {fileID: 2414485581346034870}
         m_TargetAssemblyTypeName: Assets.Scripts.Level01Controller, Assembly-CSharp
         m_MethodName: OnRespawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1639091426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414485581346034869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04ba6fddf2d3734f8343334f39d20fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: f0f3af302144bbf43a634054ad3e340b, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2414485581346034870}
+        m_TargetAssemblyTypeName: Assets.Scripts.Level01Controller, Assembly-CSharp
+        m_MethodName: ResetTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7651634377584009288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414485581346034869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04ba6fddf2d3734f8343334f39d20fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 8ebb213ccc289874499f5d66afcbd6f1, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2414485581346034870}
+        m_TargetAssemblyTypeName: Assets.Scripts.Level01Controller, Assembly-CSharp
+        m_MethodName: Win
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

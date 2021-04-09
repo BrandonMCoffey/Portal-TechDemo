@@ -1,3 +1,5 @@
 Project 02 - FPS
 
-Unity 2020.2.1f1
+ATCM 3368 - Scripting for Games - Adam Chandler
+
+Unity 2020.3.0f1

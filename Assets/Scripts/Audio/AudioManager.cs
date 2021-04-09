@@ -3,6 +3,8 @@ using UnityEngine;
 namespace Assets.Scripts.Audio {
     [RequireComponent(typeof(AudioSource))]
     public class AudioManager : MonoBehaviour {
+        [SerializeField] private AudioClip _audioClip;
+
         public static AudioManager Instance;
 
         private AudioSource _audioSource;
@@ -21,6 +23,11 @@ namespace Assets.Scripts.Audio {
         }
 
         #endregion
+
+        private void Update()
+        {
+            if (!IsPlaying()) PlaySong(_audioClip);
+        }
 
         public void PlaySong(AudioClip clip)
         {

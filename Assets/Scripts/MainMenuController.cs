@@ -5,14 +5,10 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts {
     public class MainMenuController : MonoBehaviour {
-        [SerializeField] private Text _highScoreTextView = null;
         [SerializeField] private AudioClip _startingSong = null;
 
         private void Start()
         {
-            int highScore = PlayerPrefs.GetInt("HighScore");
-            _highScoreTextView.text = "High Score: " + highScore.ToString();
-
             if (_startingSong != null) {
                 if (!AudioManager.Instance.IsPlaying()) {
                     AudioManager.Instance.PlaySong(_startingSong);
@@ -24,8 +20,7 @@ namespace Assets.Scripts {
 
         public void ResetData()
         {
-            PlayerPrefs.SetInt("HighScore", 0);
-            _highScoreTextView.text = "High Score: 0";
+            SavingSystem.ResetAll();
         }
 
         public void LoadScene(string sceneName)
