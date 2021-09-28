@@ -1,10 +1,12 @@
 using System.Collections;
-using Assets.Scripts.Player;
-using Assets.Scripts.Utility;
+using Player;
 using UnityEngine;
+using Utility.References;
 
-namespace Assets.Scripts.Interactables {
-    public class DamageVolume : MonoBehaviour {
+namespace Interactables
+{
+    public class DamageVolume : MonoBehaviour
+    {
         [SerializeField] private FloatReference _damage = new FloatReference(1);
         [SerializeField] private float _delay = 1;
 
@@ -40,8 +42,7 @@ namespace Assets.Scripts.Interactables {
         private IEnumerator DelayNextDamage()
         {
             _canDamage = false;
-            for (float t = 0; t <= _delay; t += Time.deltaTime)
-            {
+            for (float t = 0; t <= _delay; t += Time.deltaTime) {
                 yield return null;
             }
             _canDamage = true;

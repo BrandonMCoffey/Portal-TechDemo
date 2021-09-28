@@ -1,8 +1,10 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Utility {
+namespace Utility
+{
     [CreateAssetMenu]
-    public class BoolVariable : ScriptableObject {
+    public class BoolVariable : ScriptableObject
+    {
         public bool Value;
 
         public void SetValue(bool value)

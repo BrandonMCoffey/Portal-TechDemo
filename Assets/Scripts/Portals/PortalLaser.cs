@@ -1,10 +1,12 @@
 using System.Collections;
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility.References;
 
-namespace Assets.Scripts.Portals {
+namespace Portals
+{
     [RequireComponent(typeof(LineRenderer))]
-    public class PortalLaser : MonoBehaviour {
+    public class PortalLaser : MonoBehaviour
+    {
         [SerializeField] private Material _portal0 = null;
         [SerializeField] private Material _portal1 = null;
         [SerializeField] private AnimationCurve _durationCurve = AnimationCurve.Constant(0, 1, 1);

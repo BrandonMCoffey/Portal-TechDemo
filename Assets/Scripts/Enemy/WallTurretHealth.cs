@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Enemy {
-    public class WallTurretHealth : MonoBehaviour {
+namespace Enemy
+{
+    public class WallTurretHealth : MonoBehaviour
+    {
         [SerializeField] private int _health = 3;
         [SerializeField] private List<MeshRenderer> _healthVisuals = new List<MeshRenderer>();
         [SerializeField] private Material _fullHealthMaterial = null;

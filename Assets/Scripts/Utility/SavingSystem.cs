@@ -1,10 +1,11 @@
-using System;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
-namespace Assets.Scripts.Utility {
-    public static class SavingSystem {
-        public enum ScoreStrings {
+namespace Utility
+{
+    public static class SavingSystem
+    {
+        public enum ScoreStrings
+        {
             Level01,
             Level02,
             Level03

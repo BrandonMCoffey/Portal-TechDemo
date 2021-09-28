@@ -1,10 +1,12 @@
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Player;
+using Player;
 using UnityEngine;
+using Utility.GameEvents.Logic;
 
-namespace Assets.Scripts.Portals {
+namespace Portals
+{
     [RequireComponent(typeof(Rigidbody), typeof(PlayerLook))]
-    public class PortalPlayerRB : PortalTraveler {
+    public class PortalPlayerRB : PortalTraveler
+    {
         [SerializeField] private GameEvent _onTravel = null;
 
         private PlayerLook _playerLook;

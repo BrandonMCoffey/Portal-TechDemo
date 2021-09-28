@@ -1,16 +1,18 @@
-using System;
-using Assets.Scripts.Utility;
 using TMPro;
 using UnityEngine;
+using Utility;
 
-namespace Assets.Scripts.UI {
-    internal enum ScoreType {
+namespace UI
+{
+    internal enum ScoreType
+    {
         Score,
         Time
     }
 
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class LevelScores : MonoBehaviour {
+    public class LevelScores : MonoBehaviour
+    {
         [SerializeField] private string _textBeforeScore = "Score: ";
         [SerializeField] private SavingSystem.ScoreStrings _scoreString = SavingSystem.ScoreStrings.Level01;
         [SerializeField] private ScoreType _scoreType = ScoreType.Score;

@@ -1,10 +1,12 @@
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Player;
-using Assets.Scripts.Utility;
+using Player;
 using UnityEngine;
+using Utility.GameEvents.Logic;
+using Utility.References;
 
-namespace Assets.Scripts.Interactables {
-    public class CoinCollectable : MonoBehaviour {
+namespace Interactables
+{
+    public class CoinCollectable : MonoBehaviour
+    {
         [SerializeField] private FloatVariable _collection = null;
         [SerializeField] private GameEvent _onCollect = null;
         [SerializeField] private float _bobAmplitude = 1;

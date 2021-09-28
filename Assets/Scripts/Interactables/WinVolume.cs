@@ -1,9 +1,11 @@
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Player;
+using Player;
 using UnityEngine;
+using Utility.GameEvents.Logic;
 
-namespace Assets.Scripts.Interactables {
-    public class WinVolume : MonoBehaviour {
+namespace Interactables
+{
+    public class WinVolume : MonoBehaviour
+    {
         [SerializeField] private GameEvent _onWin = null;
 
         private void OnTriggerEnter(Collider other)

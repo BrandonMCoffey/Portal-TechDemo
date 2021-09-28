@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Utility {
+namespace Utility.References
+{
     [Serializable]
-    public class TransformReference {
+    public class TransformReference
+    {
         public bool UseConstant = true;
         public Transform ConstantValue;
         public TransformVariable Variable;

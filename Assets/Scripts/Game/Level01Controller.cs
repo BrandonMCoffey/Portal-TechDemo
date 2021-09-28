@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility;
+using Utility.GameEvents.Logic;
+using Utility.References;
 
-namespace Assets.Scripts {
-    public class Level01Controller : MonoBehaviour {
+namespace Game
+{
+    public class Level01Controller : MonoBehaviour
+    {
         [SerializeField] private SavingSystem.ScoreStrings _scoreString = SavingSystem.ScoreStrings.Level01;
 
         [SerializeField] private GameEvent _pauseEvent = null;

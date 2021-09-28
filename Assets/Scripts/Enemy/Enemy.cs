@@ -1,8 +1,10 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Enemy {
+namespace Enemy
+{
     [RequireComponent(typeof(BoxCollider))]
-    public class Enemy : MonoBehaviour {
+    public class Enemy : MonoBehaviour
+    {
         internal BoxCollider _collider;
 
         public virtual bool IsActive => false;

@@ -1,10 +1,12 @@
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility.GameEvents.Logic;
+using Utility.References;
 
-namespace Assets.Scripts.GameEvents {
+namespace Utility.GameEvents
+{
     [RequireComponent(typeof(ParticleSystem))]
-    public class ParticlesOnEvent : GameEventListener {
+    public class ParticlesOnEvent : GameEventListener
+    {
         [Tooltip("How many particles to emit when Event is raised.")]
         [SerializeField] private int _particlesToEmit = 10;
 

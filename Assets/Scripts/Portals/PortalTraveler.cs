@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-namespace Assets.Scripts.Portals {
+namespace Portals
+{
     [RequireComponent(typeof(Collider))]
-    public class PortalTraveler : MonoBehaviour {
+    public class PortalTraveler : MonoBehaviour
+    {
         public GameObject GraphicsObject = null;
 
         public GameObject GraphicsClone { get; set; }

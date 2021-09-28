@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Scripts.Portals {
-    public class PortalController : MonoBehaviour {
+namespace Portals
+{
+    public class PortalController : MonoBehaviour
+    {
         [SerializeField] private bool _disableAtStart = true;
         [SerializeField] private LayerMask _wallMask = 0;
         [SerializeField] private List<Portal> _portals = new List<Portal>(2);
@@ -177,7 +179,7 @@ namespace Assets.Scripts.Portals {
                 -Vector3.up
             };
 
-            var testDistances = new List<float> {PortalWidth + 0.1f, PortalWidth + 0.1f, PortalHeight + 0.1f, PortalHeight + 0.1f};
+            var testDistances = new List<float> { PortalWidth + 0.1f, PortalWidth + 0.1f, PortalHeight + 0.1f, PortalHeight + 0.1f };
 
             for (int i = 0; i < 4; ++i) {
                 Vector3 raycastPos = _portalPlacementTest.TransformPoint(0.0f, 0.0f, -0.1f);

@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility;
+using Utility.References;
 
-namespace Assets.Scripts.Player {
+namespace Player
+{
     [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
-    public class PlayerMovement : MonoBehaviour {
+    public class PlayerMovement : MonoBehaviour
+    {
         [Header("Movement Settings")]
         [SerializeField] private float _moveSpeed = 5;
         [SerializeField] private float _runSpeed = 8;

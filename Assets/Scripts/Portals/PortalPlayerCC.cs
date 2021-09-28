@@ -1,10 +1,12 @@
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Player;
+using Player;
 using UnityEngine;
+using Utility.GameEvents.Logic;
 
-namespace Assets.Scripts.Portals {
+namespace Portals
+{
     [RequireComponent(typeof(PlayerMovementCC))]
-    public class PortalPlayerCC : PortalTraveler {
+    public class PortalPlayerCC : PortalTraveler
+    {
         [SerializeField] private GameEvent _onTravel = null;
 
         private PlayerMovementCC _playerMovement;

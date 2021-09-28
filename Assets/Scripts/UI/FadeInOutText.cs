@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace Assets.Scripts.UI {
-    public class FadeInOutText : MonoBehaviour {
+namespace UI
+{
+    public class FadeInOutText : MonoBehaviour
+    {
         [SerializeField] private List<TextMeshProUGUI> _textToFade = new List<TextMeshProUGUI>();
 
         [SerializeField] private float _fadeInTime = 0.5f;

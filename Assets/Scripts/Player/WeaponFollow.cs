@@ -1,8 +1,10 @@
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility.References;
 
-namespace Assets.Scripts.Player {
-    public class WeaponFollow : MonoBehaviour {
+namespace Player
+{
+    public class WeaponFollow : MonoBehaviour
+    {
         [SerializeField] private TransformReference _transformToFollow = null;
         [SerializeField] private float _followSpeed = 0.5f;
 

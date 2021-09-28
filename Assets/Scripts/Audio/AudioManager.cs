@@ -1,8 +1,10 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Audio {
+namespace Audio
+{
     [RequireComponent(typeof(AudioSource))]
-    public class AudioManager : MonoBehaviour {
+    public class AudioManager : MonoBehaviour
+    {
         [SerializeField] private AudioClip _audioClip;
 
         public static AudioManager Instance;

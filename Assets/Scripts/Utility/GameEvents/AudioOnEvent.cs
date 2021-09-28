@@ -1,9 +1,11 @@
-using Assets.Scripts.GameEvents.Logic;
 using UnityEngine;
+using Utility.GameEvents.Logic;
 
-namespace Assets.Scripts.GameEvents {
+namespace Utility.GameEvents
+{
     [RequireComponent(typeof(AudioSource))]
-    public class AudioOnEvent : GameEventListener {
+    public class AudioOnEvent : GameEventListener
+    {
         [Tooltip("Audio to play invoke when Event is raised.")]
         [SerializeField] private AudioClip _audioClip = null;
         [SerializeField] private bool _oneShot = true;

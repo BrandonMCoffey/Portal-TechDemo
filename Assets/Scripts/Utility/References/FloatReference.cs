@@ -1,8 +1,10 @@
 ﻿using System;
 
-namespace Assets.Scripts.Utility {
+namespace Utility.References
+{
     [Serializable]
-    public class FloatReference {
+    public class FloatReference
+    {
         public bool UseConstant = true;
         public float ConstantValue;
         public FloatVariable Variable;

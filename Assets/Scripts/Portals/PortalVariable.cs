@@ -1,9 +1,11 @@
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility.References;
 
-namespace Assets.Scripts.Portals {
+namespace Portals
+{
     [CreateAssetMenu]
-    public class PortalVariable : TransformVariable {
+    public class PortalVariable : TransformVariable
+    {
         public bool ValidLocation;
         public int PortalID;
         public Collider Collider;

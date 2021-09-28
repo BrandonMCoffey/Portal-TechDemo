@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility;
 
-namespace Assets.Scripts.Portals {
+namespace Portals
+{
     [RequireComponent(typeof(Collider))]
-    public class Portal : MonoBehaviour {
+    public class Portal : MonoBehaviour
+    {
         [Header("Main Settings")]
         public Portal LinkedPortal;
         public MeshRenderer Screen;

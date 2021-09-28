@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.Utility {
-    public static class CameraUtility {
+namespace Utility
+{
+    public static class CameraUtility
+    {
         private static readonly Vector3[] CubeCornerOffsets =
         {
             new Vector3(1, 1, 1),
@@ -76,7 +78,8 @@ namespace Assets.Scripts.Utility {
             return minMax;
         }
 
-        public struct MinMax3D {
+        public struct MinMax3D
+        {
             public float XMin;
             public float XMax;
             public float YMin;

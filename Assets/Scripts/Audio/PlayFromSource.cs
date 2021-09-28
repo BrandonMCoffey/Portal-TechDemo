@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Audio {
+namespace Audio
+{
     [RequireComponent(typeof(AudioSource))]
-    public class PlayFromSource : MonoBehaviour {
+    public class PlayFromSource : MonoBehaviour
+    {
         [SerializeField] private List<AudioClip> _audioClips = new List<AudioClip>();
 
         [SerializeField] private List<float> _clipVolume = new List<float>();

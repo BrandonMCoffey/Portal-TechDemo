@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Audio;
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Portals;
-using Assets.Scripts.Utility;
+using Audio;
+using Portals;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility.GameEvents.Logic;
+using Utility.References;
 
-namespace Assets.Scripts.Enemy {
-    public class WallTurret : Enemy {
+namespace Enemy
+{
+    public class WallTurret : Enemy
+    {
         [SerializeField] private float _openTime = 1;
         [SerializeField] private Transform _panelTransform = null;
         [SerializeField] private float _panelOpeningAmount = 100;

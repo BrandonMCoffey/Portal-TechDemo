@@ -1,10 +1,12 @@
-using Assets.Scripts.Interactables;
+using Interactables;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.Player {
+namespace Player
+{
     [RequireComponent(typeof(Camera))]
-    public class PlayerInteract : MonoBehaviour {
+    public class PlayerInteract : MonoBehaviour
+    {
         [SerializeField] private Image _cursorImage = null;
 
         private bool _canInteract;

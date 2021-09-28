@@ -1,10 +1,13 @@
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility;
+using Utility.GameEvents.Logic;
+using Utility.References;
 
-namespace Assets.Scripts.Player {
+namespace Player
+{
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerMovementCC : MonoBehaviour {
+    public class PlayerMovementCC : MonoBehaviour
+    {
         [Header("Movement Settings")]
         [SerializeField] private float _walkSpeed = 5;
         [SerializeField] private float _walkAcceleration = 7;

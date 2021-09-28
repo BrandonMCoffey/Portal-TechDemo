@@ -1,9 +1,12 @@
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility;
+using Utility.GameEvents.Logic;
+using Utility.References;
 
-namespace Assets.Scripts.Player {
-    public class PlayerHealth : MonoBehaviour {
+namespace Player
+{
+    public class PlayerHealth : MonoBehaviour
+    {
         [Header("Health Values")]
         [SerializeField] private FloatVariable _currentHealth = null;
         [SerializeField] private FloatReference _startingHealth = new FloatReference(4);

@@ -1,10 +1,12 @@
-using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.References;
 
-namespace Assets.Scripts.UI {
+namespace UI
+{
     [RequireComponent(typeof(Slider))]
-    public class SliderFill : MonoBehaviour {
+    public class SliderFill : MonoBehaviour
+    {
         public FloatReference Variable;
         public FloatReference Min;
         public FloatReference Max;

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.GameEvents.Logic {
-    public class GameEventListener : MonoBehaviour {
+namespace Utility.GameEvents.Logic
+{
+    public class GameEventListener : MonoBehaviour
+    {
         public GameEvent Event;
 
         private void OnEnable()

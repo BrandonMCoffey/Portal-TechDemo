@@ -1,10 +1,11 @@
-using Assets.Scripts.Audio;
-using Assets.Scripts.Utility;
+using Audio;
 using UnityEngine;
-using UnityEngine.UI;
+using Utility;
 
-namespace Assets.Scripts {
-    public class MainMenuController : MonoBehaviour {
+namespace Game
+{
+    public class MainMenuController : MonoBehaviour
+    {
         [SerializeField] private AudioClip _startingSong = null;
 
         private void Start()

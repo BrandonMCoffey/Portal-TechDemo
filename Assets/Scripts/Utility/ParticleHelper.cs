@@ -1,8 +1,11 @@
 using UnityEngine;
+using Utility.References;
 
-namespace Assets.Scripts.Utility {
+namespace Utility
+{
     [RequireComponent(typeof(ParticleSystem))]
-    public class ParticleHelper : MonoBehaviour {
+    public class ParticleHelper : MonoBehaviour
+    {
         [SerializeField] private TransformVariable _transform = null;
         [SerializeField] private Vector3 _transformAdjust = Vector3.zero;
         [SerializeField] private bool _useDirection = false;

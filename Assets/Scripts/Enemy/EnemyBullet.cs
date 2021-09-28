@@ -1,11 +1,12 @@
 using System.Collections;
-using Assets.Scripts.Player;
-using Assets.Scripts.Utility;
+using Player;
 using UnityEngine;
 
-namespace Assets.Scripts.Enemy {
+namespace Enemy
+{
     [RequireComponent(typeof(Collider))]
-    public class EnemyBullet : MonoBehaviour {
+    public class EnemyBullet : MonoBehaviour
+    {
         [SerializeField] private float _speed = 5;
         [SerializeField] private float _damage = 1;
         [SerializeField] private float _lifespan = 5;

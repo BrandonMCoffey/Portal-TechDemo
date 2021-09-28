@@ -1,11 +1,12 @@
 using System.Collections;
-using Assets.Scripts.Player;
-using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility.References;
 
-namespace Assets.Scripts.Enemy {
-    public class EnemyDetection : MonoBehaviour {
+namespace Enemy
+{
+    public class EnemyDetection : MonoBehaviour
+    {
         [SerializeField] private float _searchRadius = 5;
         [SerializeField] private float _enemyDelay = 0.25f;
         [SerializeField] private TransformReference _playerTransform = null;

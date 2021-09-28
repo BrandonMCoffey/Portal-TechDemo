@@ -1,9 +1,11 @@
-using Assets.Scripts.Portals;
+using Portals;
 using UnityEngine;
 
-namespace Assets.Scripts.Player {
+namespace Player
+{
     [RequireComponent(typeof(Camera))]
-    public class PlayerCamera : MonoBehaviour {
+    public class PlayerCamera : MonoBehaviour
+    {
         [Header("References")]
         [SerializeField] private PortalController _portalController = null;
 

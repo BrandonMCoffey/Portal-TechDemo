@@ -1,11 +1,12 @@
-using Assets.Scripts.Enemy;
-using Assets.Scripts.GameEvents.Logic;
-using Assets.Scripts.Portals;
-using Assets.Scripts.Utility;
+using Portals;
 using UnityEngine;
+using Utility;
+using Utility.GameEvents.Logic;
 
-namespace Assets.Scripts.Player {
-    public class PlayerFire : MonoBehaviour {
+namespace Player
+{
+    public class PlayerFire : MonoBehaviour
+    {
         [Header("Settings")]
         [SerializeField] private float _fireMaxDistance = 500;
         [SerializeField] private LayerMask _surfaceMask = 0;

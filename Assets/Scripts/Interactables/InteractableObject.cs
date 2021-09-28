@@ -1,7 +1,9 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Interactables {
-    public class InteractableObject : MonoBehaviour {
+namespace Interactables
+{
+    public class InteractableObject : MonoBehaviour
+    {
         private bool _held;
         private Transform _parent;
         private Rigidbody _rigidbody;

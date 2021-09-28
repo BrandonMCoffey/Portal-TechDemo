@@ -1,8 +1,11 @@
-using Assets.Scripts.Utility;
 using UnityEngine;
+using Utility;
+using Utility.References;
 
-namespace Assets.Scripts.Player {
-    public class PlayerLook : MonoBehaviour {
+namespace Player
+{
+    public class PlayerLook : MonoBehaviour
+    {
         [Header("Camera Settings")]
         [SerializeField] private float _xMouseSensitivity = 10;
         [SerializeField] private float _yMouseSensitivity = 10;
