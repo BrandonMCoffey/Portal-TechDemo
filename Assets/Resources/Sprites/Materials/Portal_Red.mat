@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_BlueScreen
-  m_Shader: {fileID: 4800000, guid: 670c541ecf09d494896624500a1a3272, type: 3}
+  m_Name: Portal_Red
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,10 +19,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BorderTexture:
-        m_Texture: {fileID: 2800000, guid: 78e5a2ccc8452c84ab9326b91d650614, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -43,20 +39,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _InactiveTexture:
-        m_Texture: {fileID: 2800000, guid: d6688fd27dd87ce45a95f0508796dbec, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 8400000, guid: 349caf558d3034524ab3541218752975, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MaskReplace:
-        m_Texture: {fileID: 2800000, guid: 913e71f2d9a2e9548a9594f9b79d7ac3, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MaskTexture:
-        m_Texture: {fileID: 2800000, guid: d6688fd27dd87ce45a95f0508796dbec, type: 3}
+        m_Texture: {fileID: 2800000, guid: 78e5a2ccc8452c84ab9326b91d650614, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -71,19 +55,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _RingMask:
-        m_Texture: {fileID: 2800000, guid: 913e71f2d9a2e9548a9594f9b79d7ac3, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _InactiveTextureUV: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -91,16 +70,9 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _T: 0
-    - _Transparency: 0.21
     - _UVSec: 0
-    - _V: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _InactiveColor: {r: 0.41960788, g: 0.75294125, b: 1, a: 1}
-    - _InactiveColour: {r: 0.495283, g: 0.8348381, b: 1, a: 1}
-    - _MaskColour: {r: 0, g: 0, b: 0, a: 1}
-    - _TestColour: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

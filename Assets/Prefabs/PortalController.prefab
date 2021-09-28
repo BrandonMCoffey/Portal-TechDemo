@@ -72,14 +72,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5239998523430034627}
-        m_TargetAssemblyTypeName: Assets.Scripts.Portals.PortalController, Assembly-CSharp
+        m_TargetAssemblyTypeName: Portals.PortalController, Assembly-CSharp
         m_MethodName: PlacePortal
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11400000, guid: 9378dc5d9a012244f89793fb06ada128,
             type: 2}
-          m_ObjectArgumentAssemblyTypeName: Assets.Scripts.Portals.PortalVariable,
-            Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Portals.PortalVariable, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -148,6 +147,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5239998523430034626}
     m_Modifications:
+    - target: {fileID: 3438419960765059613, guid: ce71ddc64223549ed8fc19f77f5948b2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 862d756f3c67d421c9ce251cd604fbf3, type: 2}
     - target: {fileID: 3743597651704331073, guid: ce71ddc64223549ed8fc19f77f5948b2,
         type: 3}
       propertyPath: m_RootOrder
@@ -207,6 +211,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Orange Portal
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743597651704331074, guid: ce71ddc64223549ed8fc19f77f5948b2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3743597651704331078, guid: ce71ddc64223549ed8fc19f77f5948b2,
         type: 3}
@@ -299,6 +308,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Blue Portal
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743597651704331074, guid: ce71ddc64223549ed8fc19f77f5948b2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3743597651704331078, guid: ce71ddc64223549ed8fc19f77f5948b2,
         type: 3}
