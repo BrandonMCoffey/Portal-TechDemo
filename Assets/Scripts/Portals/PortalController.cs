@@ -9,6 +9,7 @@ namespace Portals
         [SerializeField] private bool _disableAtStart = true;
         [SerializeField] private LayerMask _wallMask = 0;
         [SerializeField] private List<Portal> _portals = new List<Portal>(2);
+        [SerializeField] private float _wallOffset = 0.04f;
 
         private List<GameObject> _tempObjects = new List<GameObject>();
 
@@ -117,7 +118,7 @@ namespace Portals
             _portals[_portalToPlace].gameObject.SetActive(true);
             _portals[_portalToPlace].RemoveTravelers();
             _portals[_portalToPlace].WallCollider = portal.Collider;
-            _portals[_portalToPlace].transform.position = _portalPlacementTest.position - _portalPlacementTest.forward.normalized * 0.05f;
+            _portals[_portalToPlace].transform.position = _portalPlacementTest.position - _portalPlacementTest.forward.normalized * _wallOffset;
             _portals[_portalToPlace].transform.rotation = _portalPlacementTest.rotation;
             if (_portalToPlace == 0) _portals[_portalToPlace].transform.rotation *= Quaternion.Euler(0, 180, 0);
 

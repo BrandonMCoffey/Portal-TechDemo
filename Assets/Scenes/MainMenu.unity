@@ -2667,7 +2667,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Portal Shooter
+  m_Text: Poortal
 --- !u!222 &682007865
 CanvasRenderer:
   m_ObjectHideFlags: 0

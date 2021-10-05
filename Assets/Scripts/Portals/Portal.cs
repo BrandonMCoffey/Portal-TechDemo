@@ -169,12 +169,6 @@ namespace Portals
 
         private void HandleClipping()
         {
-            // There are two main graphical issues when slicing travellers
-            // 1. Tiny sliver of mesh drawn on backside of portal
-            //    Ideally the oblique clip plane would sort this out, but even with 0 offset, tiny sliver still visible
-            // 2. Tiny seam between the sliced mesh, and the rest of the model drawn onto the portal screen
-            // This function tries to address these issues by modifying the slice parameters when rendering the view from the portal
-            // Would be great if this could be fixed more elegantly, but this is the best I can figure out for now
             const float hideDst = -1000;
             const float showDst = 1000;
             float screenThickness = LinkedPortal.ProtectScreenFromClipping(_portalCam.transform.position);

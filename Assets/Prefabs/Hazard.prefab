@@ -1783,4 +1783,4 @@ MonoBehaviour:
     UseConstant: 1
     ConstantValue: 1
     Variable: {fileID: 0}
-  _delay: 0.8
+  _delay: 0.4
