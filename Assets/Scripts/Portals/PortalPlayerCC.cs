@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Player;
 using UnityEngine;
 using Utility.GameEvents.Logic;
@@ -8,6 +9,7 @@ namespace Portals
     public class PortalPlayerCC : PortalTraveler
     {
         [SerializeField] private GameEvent _onTravel = null;
+        [SerializeField] private WeaponFollow _weaponFollow = null;
 
         private PlayerMovementCC _playerMovement;
 
@@ -25,6 +27,10 @@ namespace Portals
             _playerMovement.Yaw += delta;
             _playerMovement.SmoothYaw += delta;
             transform.eulerAngles = Vector3.up * _playerMovement.SmoothYaw;
+
+            if (_weaponFollow != null) {
+                _weaponFollow.Teleporting();
+            }
 
             _playerMovement.Velocity = toPortal.TransformVector(fromPortal.InverseTransformVector(_playerMovement.Velocity));
             //_playerMovement.angularVelocity = toPortal.TransformVector(fromPortal.InverseTransformVector(_playerMovement.angularVelocity));
