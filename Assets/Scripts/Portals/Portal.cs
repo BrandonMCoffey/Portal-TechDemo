@@ -230,8 +230,8 @@ namespace Portals
         {
             float halfHeight = PlayerCamera.nearClipPlane * Mathf.Tan(PlayerCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
             float halfWidth = halfHeight * PlayerCamera.aspect;
-            float dstToNearClipPlaneCorner = new Vector3(halfWidth, halfHeight, PlayerCamera.nearClipPlane).magnitude;
-            float screenThickness = dstToNearClipPlaneCorner;
+            // Distance to near clip plane corner
+            float screenThickness = new Vector3(halfWidth, halfHeight, PlayerCamera.nearClipPlane).magnitude;
 
             Transform screenT = Screen.transform;
             bool camFacingSameDirAsPortal = Vector3.Dot(transform.forward, transform.position - viewPoint) > 0;

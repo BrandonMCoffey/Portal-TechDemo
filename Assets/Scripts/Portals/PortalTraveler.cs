@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Player;
 using UnityEngine;
 
 namespace Portals
@@ -56,6 +57,10 @@ namespace Portals
                 GraphicsClone.transform.localScale = GraphicsObject.transform.localScale;
                 OriginalMaterials = GetMaterials(GraphicsObject);
                 CloneMaterials = GetMaterials(GraphicsClone);
+                var controller = GraphicsClone.GetComponent<VisualController>();
+                if (controller != null) {
+                    controller.SetClone(GraphicsObject);
+                }
             } else {
                 GraphicsClone.SetActive(true);
             }

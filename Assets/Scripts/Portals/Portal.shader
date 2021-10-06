@@ -10,7 +10,7 @@
         Tags { "Queue"="Transparent" "RenderType"="Transparent" }
         LOD 100
 
-        Zwrite Off
+        Cull Off
         Blend SrcAlpha OneMinusSrcAlpha
 
         Pass

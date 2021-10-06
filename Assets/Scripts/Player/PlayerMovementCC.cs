@@ -33,11 +33,13 @@ namespace Player
         [SerializeField] private GameEvent _onAnomalyReset = null;
 
         [Header("References")]
+        [SerializeField] private Animator _animator = null;
         [SerializeField] private Transform _cameraTransform = null;
         [SerializeField] private TransformVariable _transform = null;
         [SerializeField] private BoolVariable _playerHasControl = null;
 
         [Header("Other")]
+        [SerializeField] private float _animationSmoothing = 5;
         public float Yaw;
         public float Pitch;
 
@@ -52,6 +54,7 @@ namespace Player
         private bool _isRunning;
         private float _forwardMove;
         private float _rightMove;
+        private float _animationMoving;
 
         [HideInInspector] public Vector3 Velocity = Vector3.zero;
 
@@ -134,6 +137,12 @@ namespace Player
         {
             _forwardMove = Input.GetAxisRaw("Vertical");
             _rightMove = Input.GetAxisRaw("Horizontal");
+
+            if (_animator != null) {
+                float totalMove = Mathf.Clamp01(Mathf.Abs(_forwardMove) + Mathf.Abs(_rightMove));
+                _animationMoving = Mathf.Lerp(_animationMoving, totalMove, _animationSmoothing * Time.deltaTime);
+                _animator.SetFloat("moving", _animationMoving);
+            }
 
             if (Input.GetButtonDown("Run") && !_isRunning) _isRunning = true;
             if (Input.GetButtonUp("Run")) _isRunning = false;
