@@ -12,6 +12,7 @@ namespace Portals
         public MeshRenderer Screen;
         public int RecursionLimit = 10;
         public Collider WallCollider = null;
+        [SerializeField] private GameObject _hudDisplay = null;
 
         [Header("Advanced Settings")]
         public float NearClipOffset = 0.05f;
@@ -62,6 +63,16 @@ namespace Portals
                 traveler.ExitPortalThreshold(this);
                 _trackedTravelers.Remove(traveler);
             }
+        }
+
+        private void OnEnable()
+        {
+            if (_hudDisplay != null) _hudDisplay.SetActive(true);
+        }
+
+        private void OnDisable()
+        {
+            if (_hudDisplay != null) _hudDisplay.SetActive(false);
         }
 
         private void LateUpdate()
