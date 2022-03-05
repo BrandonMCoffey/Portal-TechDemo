@@ -1,6 +1,6 @@
-# Portal Tech Demo
+# Portal Demo (Unity)
 
-[View Video on my Portfolio](https://brandonmcoffey.github.io/Portfolio/)
+[View details on Artstation](https://www.artstation.com/artwork/Xnv0NR)
 
 ![Portal Demo](https://raw.githubusercontent.com/BrandonMCoffey/Portal-TechDemo/main/Source%20Files/Portal-Thumbnail.png)
 
